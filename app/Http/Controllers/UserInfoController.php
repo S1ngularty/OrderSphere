@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User_info;
 use Illuminate\Http\Request;
+use App\DataTables\UserDataTable;
 
 class UserInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UserDataTable $user_data_table)
     {
-        //
+        return $user_data_table->render("admin.users.index");
     }
 
     /**
