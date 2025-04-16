@@ -38,7 +38,7 @@ class UserDataTable extends DataTable
                 ->join('user_info','users.user_id','=','user_info.user_id')
                 ->select([
                     'users.user_id AS id',
-                    \DB::raw('CONCAT(user_info.fname," ",user_info.lname) AS Name'),
+                    DB::raw('CONCAT(user_info.fname," ",user_info.lname) AS Name'),
                     'users.email AS Email',
                     'users.role AS Role',
                     'users.status AS Status',
