@@ -6,7 +6,6 @@
         padding: 0%;
         display:flex;
         justify-content: center;
-        flex-direction: 
     }
     .content{
         box-shadow: 0 0 10px 1px rgb(111, 110, 110);
@@ -91,16 +90,33 @@
     .form-group fieldset:focus-within{
         box-shadow: 0 0 0.5px 1px #007bff;
     }
-</style>
 
+    .btn{
+        width: 90%;
+        margin:30px 0px 10px 50px;
+    }
+</style>
+@if($errors->any())
+<?php 
+// dd($errors)
+?>
+    <div class="error error-danger" style="color: red; padding: 10px; margin-bottom: 15px; border: 1px solid red; border-radius: 5px; margin:20px 0px;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="body">
     <div class="content">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="{{route('user.store')}}" method="POST" id="userForm" enctype="multipart/form-data">
+            @csrf
             <div class="group">
                 <img src="" alt="" class="pfp"><br>
             <div class="form-group">
+                <label for="" class="form-label">Profile Picture <i>(Optional)</i></label>
                     <input type="file" name="pfp" accept="image*" >
-                    <legend>Profile Picture(Optional)</legend>
             </div>
         </div>
         <div class="group">
@@ -165,5 +181,6 @@
            </div>
         </div>
         </form>
+        <button type="submit" form="userForm" class="btn btn-primary">Submit</button>
     </div>
 </div>
