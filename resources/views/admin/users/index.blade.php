@@ -1,4 +1,5 @@
 @extends('layouts.template')
+@extends('layouts.base')
 <?php
 // dd($dataTable)
 ?>

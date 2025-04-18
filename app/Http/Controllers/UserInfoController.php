@@ -102,7 +102,7 @@ class UserInfoController extends Controller
                     User_info::where('user_id',$last_id)
                     ->update([
                         'pfp'=>$filename
-                    ]);
+                    ]); 
                 }
             }
         }
