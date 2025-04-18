@@ -43,7 +43,7 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-    public function login(Request $request){
+    public function signUp(Request $request){
         $rules=[
             'email'=>'required|email',
             'password'=>'required|min:8'
@@ -61,12 +61,23 @@ class LoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
             exit;
         }
-        
+        // dd($request);
         if(Auth::attempt(array('email'=>$request->email,'password'=>$request->password))){
-            return Redirect::route('user.index');
+            if(Auth::user()->status==='active' && Auth::user()->role=='admin'){
+                return redirect()->route('user.index');
+            }elseif(Auth::user()->status==='active' && Auth::user()->role=='user'){
+                //still in progess
+            }else{
+                Auth::logout();
+                return redirect()->back()->with('warning','Your account is deactivated');
+            }
         }else{
             return redirect()->back()->with('error','Wrong credentials');
             dd($request);
         };
     }
+
+
+    
+    
 }

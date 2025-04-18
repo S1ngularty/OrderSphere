@@ -1,11 +1,16 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
-    @if($errors->any())
+    @if($errors->any() || session('error') || session('warning'))
 <?php 
 // dd($errors)
 ?>
+<div class="error error-danger" style="color: red; padding: 10px; margin-bottom: 15px; border: 1px solid red; border-radius: 5px; margin:20px 0px;">
+    <ul>
+        <li>{{session('error')}}</li>
+        <li>{{session('warning')}}</li>
+    </ul>
+</div>
     <div class="error error-danger" style="color: red; padding: 10px; margin-bottom: 15px; border: 1px solid red; border-radius: 5px; margin:20px 0px;">
         <ul>
             @foreach ($errors->all() as $error)

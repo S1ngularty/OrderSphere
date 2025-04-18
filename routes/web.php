@@ -16,7 +16,14 @@ Route::prefix('admin')->group(function(){
     Route::post('/user/store',[UserInfoController::class,'store'])->name('user.store');
 });
 
-Auth::routes();
+Auth::routes([
+    'login'=>false
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/signup',[LoginController::class,'login'])->name('signup');
+Route::post('/signup',[LoginController::class,'signUp'])->name('signup');
+Route::get('/login',function (){
+    return view('auth.login');
+})->name('login');
+Route::get('/lg',function (){
+Auth::logout();
+});
