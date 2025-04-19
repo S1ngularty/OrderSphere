@@ -14,6 +14,9 @@ Route::prefix('admin')->group(function(){
         return view("admin.users.create");
     });
     Route::post('/user/store',[UserInfoController::class,'store'])->name('user.store');
+    Route::get('/user/edit/{id}',[UserInfoController::class,'edit'])->name('user.edit');
+    Route::get('user/delete/{id}',[UserInfoController::class,'destroy'])->name('user.delete');
+    Route::get('user/restore/{id}',[UserInfoController::class,'restore'])->name('user.restore');
 });
 
 Auth::routes([

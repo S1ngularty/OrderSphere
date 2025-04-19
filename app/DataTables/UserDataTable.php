@@ -23,7 +23,15 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'user.action')
+            ->addColumn('action',function ($row){
+                return "<div class='action-group'>
+                <a href='".route('user.edit',$row->id)."' class='btn btn-primary'><i class='fa fa-edit'></i></a>
+                    <form action='".route('user.delete',$row->id)."' method='GET' class='form-control'>
+                        <button class='btn btn-danger' type='submit'><i class='fa fa-trash'></i></button>
+                    </form>
+                </div>";
+            })
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 

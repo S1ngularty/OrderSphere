@@ -121,9 +121,13 @@ class UserInfoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User_info $user_info)
+    public function edit(User_info $user_info,$id)
     {
-        //
+        $info=User_info::where('user_id',$id)->first();
+        $account=User::where('user_id',$id)->first();
+
+        dd($info,$account);
+        return view('admin.users.edit',compact('info','account'));
     }
 
     /**
@@ -137,8 +141,13 @@ class UserInfoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User_info $user_info)
+    public function destroy($id)
     {
-        //
+        $del=User::find($id);
+        if($del->delete($del)){
+            return redirect()->back()->with('success','successfully deleted the user');
+        }else{
+            return redirect()->back()->with('error','failed to delete the specified user');
+        }
     }
 }
