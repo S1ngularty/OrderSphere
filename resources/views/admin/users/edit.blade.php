@@ -1,7 +1,5 @@
-@extends('layouts.app')
-<?php 
-// dd($account->user_id)
-?>
+@include('layouts.app')
+
 <style>
     .body{
         margin: 0%;
@@ -98,9 +96,10 @@
         margin:30px 0px 10px 50px;
     }
 </style>
-@section('content')
-    @if($errors->any())
-
+@if($errors->any())
+<?php 
+// dd($errors)
+?>
     <div class="error error-danger" style="color: red; padding: 10px; margin-bottom: 15px; border: 1px solid red; border-radius: 5px; margin:20px 0px;">
         <ul>
             @foreach ($errors->all() as $error)
@@ -111,7 +110,7 @@
 @endif
 <div class="body">
     <div class="content">
-        <form action="{{route('user.update',$account->user_id)}}" method="POST" id="userForm" enctype="multipart/form-data">
+        <form action="{{route('user.store')}}" method="POST" id="userForm" enctype="multipart/form-data">
             @csrf
             <div class="group">
                 <img src="" alt="" class="pfp"><br>
@@ -123,40 +122,40 @@
         <div class="group">
             <div class="form-group">
                 <fieldset>
-                    <input type="text" name="fname" >
+                    <input type="text" name="fname" value="{{$info->fname}}" >
                     <legend>First Name</legend>
                 </fieldset>
             </div>
             <div class="form-group">
                 <fieldset>
-                    <input type="text" name="lname" >
+                    <input type="text" name="lname" value="{{$info->lname}}" >
                     <legend>Last Name</legend>
                 </fieldset>
             </div>
             <div class="form-group">
                 <fieldset>
-                    <input type="number" name="age" min="18" max="180" step="1" >
+                    <input type="number" name="age" min="18" max="180" step="1" value="{{$info->age}}" >
                     <legend>Age *</legend>
                 </fieldset>
             </div>
             <div class="form-group">
                 <fieldset>
                     <select name="gender" id="" class="form-select">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="male" {{($info->gender ==='male'? 'selected' : '')}}>Male</option>
+                        <option value="female" {{($info->gender ==='male'? 'selected' : '')}}>Female</option>
                     </select>
                     <legend>Gender</legend>
                 </fieldset>
             </div>
             <div class="form-group">
                 <fieldset>
-                    <input type="text" name="address" >
+                    <input type="text" name="address" value="{{$info->address}}" >
                     <legend>Address</legend>
                 </fieldset>
             </div>
             <div class="form-group">
                 <fieldset>
-                    <input type="text" name="contacts" >
+                    <input type="text" name="contacts" value="{{$info->contact}}">
                     <legend>Contact Number</legend>
                 </fieldset>
             </div>
@@ -164,26 +163,30 @@
         <div class="group">
            <div class="form-group">
             <fieldset>
-                <input type="email" name="email" >
+                <input type="email" name="email" value="{{$account->email}}" >
                 <legend>Email *</legend>
             </fieldset>
            </div>
            <div class="form-group">
             <fieldset>
-                <input type="password" name="password" >
-                <legend>Password</legend>
+                <select name="role" id="">
+                    <option value="admin" {{($account->role==='admin'? 'selected' : '')}} >Admin</option>
+                    <option value="user" {{($account->role==='user'? 'selected' : '')}} >User</option>
+                </select>
+                <legend>Role</legend>
             </fieldset>
            </div>
            <div class="form-group">
             <fieldset>
-                <input type="password" name="confirm_password" >
-                <legend>Confirm Password</legend>
+                <select name="role" id="">
+                    <option value="active" {{($account->status==='active'? 'selected' : '')}} >Active</option>
+                    <option value="inactive" {{($account->status==='inactive'? 'selected' : '')}} >Inactive</option>
+                </select>
+                <legend>Status</legend>
             </fieldset>
            </div>
         </div>
         </form>
-        <button type="submit" form="userForm" class="btn btn-primary">Submit</button>
+        <button type="submit" form="userForm" class="btn btn-primary">Apply Changes</button>
     </div>
 </div>
-</form>
-@endsection
