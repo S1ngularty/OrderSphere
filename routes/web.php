@@ -15,6 +15,7 @@ Route::prefix('admin')->group(function(){
     });
     Route::post('/user/store',[UserInfoController::class,'store'])->name('user.store');
     Route::get('/user/edit/{id}',[UserInfoController::class,'edit'])->name('user.edit');
+    Route::post('/user/update/{id}',[UserInfoController::class,'update'])->name('user.update');
     Route::get('user/delete/{id}',[UserInfoController::class,'destroy'])->name('user.delete');
     Route::get('user/restore/{id}',[UserInfoController::class,'restore'])->name('user.restore');
 });

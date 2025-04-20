@@ -126,16 +126,16 @@ class UserInfoController extends Controller
         $info=User_info::where('user_id',$id)->first();
         $account=User::where('user_id',$id)->first();
 
-        dd($info,$account);
+        // dd($info,$account);
         return view('admin.users.edit',compact('info','account'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User_info $user_info)
+    public function update(Request $request, User_info $user_info, $id)
     {
-        //
+        dd($request,$id);
     }
 
     /**
