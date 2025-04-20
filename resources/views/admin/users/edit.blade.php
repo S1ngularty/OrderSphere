@@ -110,13 +110,14 @@
 @endif
 <div class="body">
     <div class="content">
-        <form action="{{route('user.store')}}" method="POST" id="userForm" enctype="multipart/form-data">
+        <form action="{{route('user.update',$account->user_id)}}" method="POST" id="userForm" enctype="multipart/form-data">
             @csrf
             <div class="group">
-                <img src="" alt="" class="pfp"><br>
+                <img src="{{asset('storage/user_images/'.$info->pfp)}}" alt="" class="pfp"><br>
             <div class="form-group">
-                <label for="" class="form-label">Profile Picture <i>(Optional)</i></label>
+                <label for="" class="form-label">Profile Picture</label>
                     <input type="file" name="pfp" accept="image*" >
+                    <input type="hidden" value="{{$info->pfp}}" name="current_pfp">
             </div>
         </div>
         <div class="group">
@@ -178,12 +179,15 @@
            </div>
            <div class="form-group">
             <fieldset>
-                <select name="role" id="">
+                <select name="status" id="">
                     <option value="active" {{($account->status==='active'? 'selected' : '')}} >Active</option>
                     <option value="inactive" {{($account->status==='inactive'? 'selected' : '')}} >Inactive</option>
                 </select>
                 <legend>Status</legend>
             </fieldset>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" >Change password</button>
+            </div>
            </div>
         </div>
         </form>

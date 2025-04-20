@@ -135,7 +135,73 @@ class UserInfoController extends Controller
      */
     public function update(Request $request, User_info $user_info, $id)
     {
-        dd($request,$id);
+        // dd($request,$id);
+        $rules=[
+            'email'=>'required',
+            'fname'=>'required',
+            'lname'=>'required|alpha',
+            'age'=>'required|numeric|min:8',
+            'contacts'=>'numeric|digits:11'
+        ];
+
+        $message=[
+            'email'=>'Please enter a valid Email',
+            'lname'=>'Enter a valid Surname',
+            'fname'=>'Ender a valid First Name',
+            'age'=>'Must be 18 above',
+            'contacts.numeric'=>'Must only contain a numbers',
+            'contacts.digits'=>'contact number has only 11 numbers'
+        ];
+
+        $vaildate=Validator::make($request->all(),$rules,$message);
+        if($vaildate->fails()){
+            return redirect()->back()->withErrors($vaildate)->withInput();
+            exit;
+        }
+
+        DB::table('users')->where('user_id',$id)
+        ->update([
+            'email'=>$request->email,
+            'role'=>$request->role,
+            'status'=>$request->status,
+
+        ]);
+
+        DB::table('user_info')->where('user_id',$id)
+        ->update([
+            'fname'=>$request->fname,
+            'lname'=>$request->lname,
+            'age'=>$request->age,
+            'gender'=>$request->gender,
+            'contact'=>$request->contacts,
+            'address'=>$request->address,
+        ]);
+
+        if($request->hasFile('pfp')){
+            $filename=$request->file('pfp')->hashName();
+            $path=$request->file('pfp')->storeAs('user_images/',$filename,'public');
+            if($path){
+                $find=public_path('storage/user_images/'.$request->current_pfp);
+                if(file_exists($find) && !empty($request->current_pfp)){
+                    // dd($find);
+                    if(unlink($find)){
+                        DB::table('user_info')->where('user_id',$id)
+                        ->update([
+                            'pfp'=>$filename
+                        ]);
+                    }else{
+                        return redirect()->back()->with('error','failed to delete your current pfp');
+                    }
+                }else{
+                    DB::table('user_info')->where('user_id',$id)
+                    ->update([
+                        'pfp'=>$filename
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**
