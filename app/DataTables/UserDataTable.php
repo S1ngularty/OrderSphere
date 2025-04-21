@@ -24,12 +24,20 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action',function ($row){
+             if($row->deleted===null){
                 return "<div class='action-group'>
                 <a href='".route('user.edit',$row->id)."' class='btn btn-primary'><i class='fa fa-edit'></i></a>
                     <form action='".route('user.delete',$row->id)."' method='GET' class='form-control'>
                         <button class='btn btn-danger' type='submit'><i class='fa fa-trash'></i></button>
                     </form>
                 </div>";
+             }else{
+                return "<div class='action-group'>
+                    <form action=".route('user.restore',$row->id)." method='GET'>
+                        <button class='btn btn-warning' type='submit'><i class='fas fa-refresh'></i></button>
+                    </form>
+                </div>";
+             }
             })
             ->rawColumns(['action'])
             ->setRowId('id');
@@ -43,6 +51,7 @@ class UserDataTable extends DataTable
     public function query(User $model): QueryBuilder
     {
         return $model->newQuery()
+                ->withTrashed()
                 ->join('user_info','users.user_id','=','user_info.user_id')
                 ->select([
                     'users.user_id AS id',
@@ -50,6 +59,7 @@ class UserDataTable extends DataTable
                     'users.email AS Email',
                     'users.role AS Role',
                     'users.status AS Status',
+                    'users.deleted_at AS deleted'
                 ]);             
     }
 

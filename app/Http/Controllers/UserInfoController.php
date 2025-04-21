@@ -216,4 +216,17 @@ class UserInfoController extends Controller
             return redirect()->back()->with('error','failed to delete the specified user');
         }
     }
+
+    public function restore($id){
+        $user=User::withTrashed()->find($id);
+        if(!empty($user)){
+            if($user->restore()){
+                return redirect()->back()->with('success','user has been restored successfully!');
+            }else{
+                return redirect()->back()->with('failed','Failed to restore the user');
+            }
+        }else{
+            return redirect()->back()->with('not_found','user is not found in the database');
+        }
+    }
 }
