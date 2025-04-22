@@ -229,4 +229,28 @@ class UserInfoController extends Controller
             return redirect()->back()->with('not_found','user is not found in the database');
         }
     }
+
+    public function role_update($id,Request $request){
+        $user=User::find($id);
+        if(!empty($user)){
+            $user->role=$request->role;
+            if($user->save()){
+                return redirect()->back()->with('success','User role is successfully updated');
+            }else{
+                return redirect()->back()->with('failed','Failed to update the users Role');
+            }
+        }
+    }
+
+    public function status_update($id, Request $request){
+        $user=User::find($id);
+        if(!empty($user)){
+            $user->status=$request->status;
+            if($user->save()){
+                return redirect()->back()->with('success','Successfully updated the user status');
+            }else{
+                return redirect()->back()->with('failed','Failed to update the user status. Please try again');
+            }
+        }
+    }
 }

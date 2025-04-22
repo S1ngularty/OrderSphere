@@ -20,6 +20,9 @@ Route::prefix('admin')->group(function(){
     Route::get('user/restore/{id}',[UserInfoController::class,'restore'])->name('user.restore');
 });
 
+Route::get('/user/status_update/{id}',[UserInfoController::class,'status_update'])->name('user.status');
+Route::get('/user/role_update/{id}',[UserInfoController::class,'role_update'])->name('user.role');
+
 Auth::routes([
     'login'=>false
 ]);

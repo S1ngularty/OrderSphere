@@ -39,7 +39,29 @@ class UserDataTable extends DataTable
                 </div>";
              }
             })
-            ->rawColumns(['action'])
+
+            ->addColumn('Role',function($row){
+                return "<div class='container'>
+                    <form action='".route('user.role',$row->id)."' method='GET' class='form-control'>
+                        <select class='form-select' name='role' onchange='this.form.submit()'>
+                            <option value='admin' ".($row->Role==='admin'? 'selected': '').">Admin</option>
+                            <option value='user' ".($row->Role==='user'? 'selected': '').">User</option>
+                        </select>
+                    </form>
+                </div>";
+            })
+
+            ->addColumn('Status',function($row){
+                return "<div class='container'>
+                    <form action='".route('user.status',$row->id)."' method='GET' class='form-control'>
+                        <select class='form-select' name='status' onchange='this.form.submit()'>
+                            <option value='active' ".($row->Status==='active'? 'selected': '').">Active</option>
+                            <option value='inactive' ".($row->Status==='inactive'? 'selected': '').">Inactive</option>
+                        </select>
+                    </form>
+                </div>";
+            })
+            ->rawColumns(['Role','Status','action'])
             ->setRowId('id');
     }
 
@@ -92,8 +114,8 @@ class UserDataTable extends DataTable
         return [
             Column::make('Name'),
             Column::make('Email'),
-            Column::make('Role'),
-            Column::make('Status'),
+            Column::computed('Role'),
+            Column::computed('Status'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
