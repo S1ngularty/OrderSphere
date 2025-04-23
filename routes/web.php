@@ -5,6 +5,7 @@ use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Models\Items;
 use Illuminate\Support\Facades\Auth;
 
 // admin side
@@ -18,7 +19,11 @@ Route::prefix('admin')->group(function(){
     Route::post('/user/update/{id}',[UserInfoController::class,'update'])->name('user.update');
     Route::get('user/delete/{id}',[UserInfoController::class,'destroy'])->name('user.delete');
     Route::get('user/restore/{id}',[UserInfoController::class,'restore'])->name('user.restore');
+
+
+    Route::resource('items',ItemsController::class)->names('items');
 });
+
 
 Route::get('/user/status_update/{id}',[UserInfoController::class,'status_update'])->name('user.status');
 Route::get('/user/role_update/{id}',[UserInfoController::class,'role_update'])->name('user.role');

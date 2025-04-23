@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Items;
 use Illuminate\Http\Request;
+use App\DataTables\ItemDataTable;
 
 class ItemsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ItemDataTable $datatable)
     {
-        //
+        return $datatable->render('admin.items.index');
     }
 
     /**
