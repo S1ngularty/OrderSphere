@@ -22,6 +22,7 @@ Route::prefix('admin')->group(function(){
 
 
     Route::resource('items',ItemsController::class)->names('items');
+    Route::patch('items/restore/{id}',[ItemsController::class,'restore'])->name('items.restore');
 });
 
 

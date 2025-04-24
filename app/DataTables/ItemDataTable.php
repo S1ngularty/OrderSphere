@@ -23,12 +23,24 @@ class ItemDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($row){
-                return "<div class='container'>
+                if($row->Deleted!==null){
+                    return "<div class='container d-flex gap-2'>
+                        <form action='".route('items.restore',$row->id)."'  method='POST'>
+                            ".csrf_field()."
+                            ".@method_field('PATCH')."
+                            <button type='submit' class='btn btn-warning'><i class='fa fa-trash-restore'></i></button>
+                        </form>
+                    </div>";
+                }else{
+                    return "<div class='container d-flex gap-2'>
                 <a href='".route('items.edit',$row->id)." class='btn btn-primary''><i class='fas fa-edit'></i></a>
-                    <form action='".route('items.destroy',$row->id)."' class='form-control' method='get'>
+                    <form action='".route('items.destroy',$row->id)."' method='POST'>
+                    ".csrf_field()."
+                    ".@method_field('DELETE')."
                         <button class='btn btn-danger' type='submit'><i class='fas fa-trash'></i></button>
                     </form>
                 </div>";
+                }
             })
             ->rawColumns(['action'])
             ->setRowId('id');
@@ -40,6 +52,7 @@ class ItemDataTable extends DataTable
     public function query(Items $model): QueryBuilder
     {
         return $model->newQuery()
+        ->withTrashed()
         ->join('stocks', 'stocks.item_id', '=', 'items.item_id')
         ->join('item_category', 'item_category.item_id','=','items.item_id')
         ->join('categories','item_category.category_id', '=','categories.category_id')
@@ -49,6 +62,7 @@ class ItemDataTable extends DataTable
             'items.item_price as Price',
             'stocks.qty as Stocks',
             'categories.category_name as Category',
+            'items.deleted_at as Deleted'
         );
     }
 
