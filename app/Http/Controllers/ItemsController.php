@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Items;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\DataTables\ItemDataTable;
 
@@ -21,7 +25,8 @@ class ItemsController extends Controller
      */
     public function create()
     {
-        //
+        $collection=Category::all();
+        return view('admin.items.create',compact('collection'));
     }
 
     /**
@@ -29,7 +34,7 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
