@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Items;
 use App\Models\Category;
+use App\Models\Stocks;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\DataTables\ItemDataTable;
+use App\Models\item_category;
 
 class ItemsController extends Controller
 {
@@ -34,7 +36,61 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+            // dd($request->all());
+        $rules=[
+            'item_name'=>'required',
+            'qty'=>'required|min:1',
+            'category'=>'required',
+            'item_desc'=>'required',
+
+        ];
+
+        $messages=[
+            'item_name'=>'Please enter the item name',
+            'qty'=>'Please enter the item stocks',
+            'category'=>'Please enter the item category',
+            'item_desc'=>'Please enter the item description',
+        ];
+
+        $validate=Validator::make($request->all(),$rules,$messages);
+
+        if($validate->fails()){
+            return redirect()->back()->withErrors($validate)->withInput();
+        }else{
+            $item= new Items();
+            $item->item_name=$request->item_name;
+            $item->item_price=$request->item_price;
+            $item->description=$request->item_desc;
+            if($item->save() && $last_id=$item->item_id){
+                $stock= new Stocks();
+                $stock->item_id=$last_id;
+                $stock->qty=$request->qty;
+
+                $ic=new item_category();
+                $ic->item_id=$last_id;
+                $ic->category_id=$request->category;
+
+                if($stock->save() && $ic->save()){
+                    if($request->hasFile('file')){
+                        foreach($request->file('file') as $files){
+                            $filename=$files->hashName();
+                            if(!empty($filename)){
+                                $path=$files->storeAs('item_images',$filename,'public');
+                                if($path){
+                                    DB::table('item_gallery')->insert([
+                                        'item_id'=> $last_id,
+                                        'img'=>$filename,
+                                    ]);
+                                }else{
+                                    return redirect()->back()->with('failed','failed to store the images');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return redirect()->back()->with('success','New item has been added successfully');
     }
 
     /**

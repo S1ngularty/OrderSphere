@@ -10,6 +10,7 @@ class item_category extends Model
     use HasFactory;
 
     protected $table='item_category';
+    public $timestamps=false;
     protected $fillable=[
         'item_id',
         'category_id'
