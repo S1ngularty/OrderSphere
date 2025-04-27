@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class userMiddleware
@@ -15,6 +16,9 @@ class userMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(Auth::user()->status!=='inactive' && Auth::user()->role!=='user'){
+            abort(403,'Unauthenticated User (2)');
+        }
         return $next($request);
     }
 }
