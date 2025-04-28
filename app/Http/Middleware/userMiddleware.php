@@ -16,6 +16,9 @@ class userMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(!Auth::check()){
+            abort(403,'Please Log in first');
+        }
         if(Auth::user()->status!=='inactive' && Auth::user()->role!=='user'){
             abort(403,'Unauthenticated User (2)');
         }

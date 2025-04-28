@@ -10,7 +10,7 @@ use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
 
 // admin side
-Route::middleware(['auth'],AdminMiddleware::class)->prefix('admin')->group(function(){
+Route::middleware(AdminMiddleware::class)->prefix('admin')->group(function(){
     Route::get('/users',[UserInfoController::class,"index"])->name("user.index");
     Route::get('users/create', function (){
         return view("admin.users.create");
