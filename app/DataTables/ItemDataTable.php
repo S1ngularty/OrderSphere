@@ -33,7 +33,7 @@ class ItemDataTable extends DataTable
                     </div>";
                 }else{
                     return "<div class='container d-flex gap-2'>
-                <a href='".route('items.edit',$row->id)." class='btn btn-primary''><i class='fas fa-edit'></i></a>
+                <a href='".route('items.edit',$row->id)."' class='btn btn-primary'><i class='fas fa-edit'></i></a>
                     <form action='".route('items.destroy',$row->id)."' method='POST'>
                     ".csrf_field()."
                     ".@method_field('DELETE')."

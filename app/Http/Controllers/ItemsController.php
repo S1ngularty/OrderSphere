@@ -98,16 +98,25 @@ class ItemsController extends Controller
      */
     public function show(Items $items)
     {
-        //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Items $items)
+    public function edit(Items $items,$item)
     {
-        //
-    }
+        // dd($item);
+        $item=DB::table('items')
+        ->join('item_category','items.item_id','=','item_category.item_id')
+        ->join('stocks','stocks.item_id','=','items.item_id')
+        ->where('items.item_id',$item)
+        ->first();
+        $category=Category::all();
+        
+
+        return view('admin.items.edit',compact('item','category'));
+        }
 
     /**
      * Update the specified resource in storage.
