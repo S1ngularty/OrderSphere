@@ -17,7 +17,9 @@ class UserInfoController extends Controller
      */
     public function index(UserDataTable $user_data_table)
     {
-        return $user_data_table->render("admin.users.index");
+        // return $user_data_table->render("admin.users.index");
+        $info=User::find(2)->user_info;
+        dd($info);
     }
 
     /**

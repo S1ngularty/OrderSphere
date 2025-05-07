@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\testController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Models\Items;
 use App\Http\Middleware\AdminMiddleware;
@@ -41,3 +42,6 @@ Route::get('/login',function (){
 Route::get('/lg',function (){
 Auth::logout();
 });
+
+
+Route::resource('test',testController::class);
