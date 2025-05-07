@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Items;
+use App\Models\Category;
 
 use Illuminate\Http\Request;
 
@@ -12,10 +13,8 @@ class testController extends Controller
      */
     public function index()
     {
-        $item=items::find(9)->category;
-        foreach($item as $items){
-            dd($items->category_name);
-        }
+        $item=Category::find(1)->items;
+        dd($item);
     }
 
     /**
