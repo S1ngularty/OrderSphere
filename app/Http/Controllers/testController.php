@@ -13,11 +13,12 @@ class testController extends Controller
      */
     public function index()
     {
-        $item=Items::with('category',function($query){
-            $query->where('category_id','=',1);
-        })->get();
+        $item=category::withWhereHas('items')->get();
         dump($item);
+
+       dump($item[0]->items[1]->item_name);
     }
+
 
     /**
      * Show the form for creating a new resource.
