@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Models\Items;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facades\Debugbar;
+
 
 // admin side
 Route::middleware(AdminMiddleware::class)->prefix('admin')->group(function(){
@@ -45,3 +47,8 @@ Auth::logout();
 
 
 Route::resource('test',testController::class);
+
+route::get('debug',function(){
+    Debugbar::info("hallloooooooooo");
+    return "bottom of the screen";
+});

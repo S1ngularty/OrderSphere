@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Items;
 use App\Models\Category;
-
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 
 class testController extends Controller
@@ -13,8 +13,10 @@ class testController extends Controller
      */
     public function index()
     {
-        $item=Category::find(1)->items;
-        dd($item);
+        $item=Items::with('category',function($query){
+            $query->where('category_id','=',1);
+        })->get();
+        dump($item);
     }
 
     /**

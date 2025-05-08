@@ -23,4 +23,5 @@ class Category extends Model
         return $this->belongsToMany(Items::class,'item_category','category_id','item_id');
     }
 
+
 }
