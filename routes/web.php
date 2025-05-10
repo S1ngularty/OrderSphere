@@ -10,6 +10,7 @@ use App\Models\Items;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Http\Controllers\apiController;
 
 
 // admin side
@@ -48,7 +49,6 @@ Auth::logout();
 
 Route::resource('test',testController::class);
 
-route::get('debug',function(){
-    Debugbar::info("hallloooooooooo");
-    return "bottom of the screen";
-});
+Route::apiResource("/api",apiController::class);
+
+
