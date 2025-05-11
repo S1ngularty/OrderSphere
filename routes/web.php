@@ -11,7 +11,7 @@ use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\apiController;
-
+use Spatie\FlareClient\Api;
 
 // admin side
 Route::middleware(AdminMiddleware::class)->prefix('admin')->group(function(){
@@ -49,6 +49,5 @@ Auth::logout();
 
 Route::resource('test',testController::class);
 
-Route::apiResource("/api",apiController::class);
 
 

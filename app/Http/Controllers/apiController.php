@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Items;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class apiController extends Controller
 {
@@ -24,7 +26,20 @@ class apiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        // $password=Hash::make($request->password);
+        // $user=new User();
+        // $user->email=$request->email;
+        // $user->password=$password;
+        // $user->role=$request->role;
+        // $user->status=$request->status;
+        // $user->save();
+
+        $user=User::create($request->all());
+
+        return response()->json(["user is store successfully!",
+        "status"=>200,"data"=>$request->all()]);
     }
 
     /**
