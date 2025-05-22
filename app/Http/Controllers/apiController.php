@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Items;
 use App\Models\User;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Facades\Hash;
 
 class apiController extends Controller
@@ -14,9 +15,7 @@ class apiController extends Controller
      */
     public function index()
     {
-        $item=Items::whereHas("category", function($query){
-           $query->where("item_id","=",11); 
-        })->get();
+        $item=User::with('user_info')->get();
          return response()->json($item);
          dump($item);
     }
@@ -56,6 +55,12 @@ class apiController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        // $user=User::find($id);
+        // $user->update($request->all());
+        dump($request->input());
+      return response()->json(['ID'=>$id,'status'=>200,
+      'message'=> " the user is updated succesfully!",
+      'data'=>$request->all()]);
     }
 
     /**
@@ -63,6 +68,10 @@ class apiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if(user::forceDestroy($id)){
+            return response()->json(['status'=>200,
+            'message'=>'user is successfully deleted']);
+        }
+        
     }
 }

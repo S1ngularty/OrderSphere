@@ -14,7 +14,7 @@ use App\Http\Controllers\apiController;
 use Spatie\FlareClient\Api;
 
 // admin side
-Route::middleware(AdminMiddleware::class)->prefix('admin')->group(function(){
+Route::prefix('admin')->group(function(){
     Route::get('/users',[UserInfoController::class,"index"])->name("user.index");
     Route::get('users/create', function (){
         return view("admin.users.create");
@@ -48,6 +48,6 @@ Auth::logout();
 
 
 Route::resource('test',testController::class);
-
+Route::view("ajax/users","user.test");
 
 
