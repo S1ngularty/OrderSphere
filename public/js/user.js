@@ -59,7 +59,14 @@ $(document).ready(function() {
             },
             dataType:"json",
             success: function(data){
-                console.log("yeseeeeeeeeeee")
+                console.log(data.envelope.user)
+                let tr=$("<tr>");
+                tr.append($("<td>").text("#"))
+                tr.append($("<td>").text(data.envelope.user.email))
+                tr.append($("<td>").text(data.envelope.user.status))
+                tr.append($("<td>").text(data.envelope.user.role))
+                tr.append($("<td>").html(`<a href='z' class='btn btn-primary'><i class='fa fa-edit'></i></a>`))
+                $("tbody").prepend(tr).fadeIn('slow')
             },
             error: function(error){
                 console.log(error)

@@ -38,7 +38,7 @@ class UserInfoController extends Controller
 
         $user= User::create($request->all());
         if($user){
-            return response()->json();
+            return response()->json(["envelope"=>["user"=>$request->all(),"status"=>200]]);
         }
 
         // $rules=[
