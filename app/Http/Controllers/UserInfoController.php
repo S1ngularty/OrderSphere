@@ -18,8 +18,7 @@ class UserInfoController extends Controller
     public function index(UserDataTable $user_data_table)
     {
         // return $user_data_table->render("admin.users.index");
-        $info=User::all();
-
+        $info=User::withoutTrashed()->get();
         return response()->json($info);
     }
 
@@ -36,80 +35,86 @@ class UserInfoController extends Controller
      */
     public function store(Request $request)
     {
-        $rules=[
-            'email'=>'required',
-            'password'=>'required|min:8',
-            'confirm_password'=> 'required|same:password',
-            'fname'=>'required',
-            'lname'=>'required|alpha',
-            'age'=>'required|numeric|min:8',
-            'contacts'=>'numeric|digits:11'
-        ];
 
-        $message=[
-            'email'=>'Please enter a valid Email',
-            'password.required'=>'Please enter a password for you account security',
-            'password.min'=>'password is too short minimum password characters is 8',
-            'confirm_password.same'=>'password dont match',
-            'confirm_password.required'=>'Please confirm you password',
-            'lname'=>'Enter a valid Surname',
-            'fname'=>'Ender a valid First Name',
-            'age'=>'Must be 18 above',
-            'contacts.numeric'=>'Must only contain a numbers',
-            'contacts.digits'=>'contact number has only 11 numbers'
-        ];
-
-        $vaildate=Validator::make($request->all(),$rules,$message);
-        if($vaildate->fails()){
-            return redirect()->back()->withErrors($vaildate)->withInput();
-            exit;
+        $user= User::create($request->all());
+        if($user){
+            return response()->json();
         }
 
-        $password=Hash::make($request->password);
-        $user=new User();
-        $user->email=$request->email;
-        $user->password=$request->password;
-        $user->role='user';
-        $user->status='active';
-        $user->save();
-        $last_id=$user->user_id;
-        // dd($user,$last_id);
+        // $rules=[
+        //     'email'=>'required',
+        //     'password'=>'required|min:8',
+        //     'confirm_password'=> 'required|same:password',
+        //     'fname'=>'required',
+        //     'lname'=>'required|alpha',
+        //     'age'=>'required|numeric|min:8',
+        //     'contacts'=>'numeric|digits:11'
+        // ];
+
+        // $message=[
+        //     'email'=>'Please enter a valid Email',
+        //     'password.required'=>'Please enter a password for you account security',
+        //     'password.min'=>'password is too short minimum password characters is 8',
+        //     'confirm_password.same'=>'password dont match',
+        //     'confirm_password.required'=>'Please confirm you password',
+        //     'lname'=>'Enter a valid Surname',
+        //     'fname'=>'Ender a valid First Name',
+        //     'age'=>'Must be 18 above',
+        //     'contacts.numeric'=>'Must only contain a numbers',
+        //     'contacts.digits'=>'contact number has only 11 numbers'
+        // ];
+
+        // $vaildate=Validator::make($request->all(),$rules,$message);
+        // if($vaildate->fails()){
+        //     return redirect()->back()->withErrors($vaildate)->withInput();
+        //     exit;
+        // }
+
+        // $password=Hash::make($request->password);
+        // $user=new User();
+        // $user->email=$request->email;
+        // $user->password=$request->password;
+        // $user->role='user';
+        // $user->status='active';
+        // $user->save();
+        // $last_id=$user->user_id;
+        // // dd($user,$last_id);
         
-        $info= new User_info();
-        $info->user_id=$last_id;
-        $info->fname=$request->fname;
-        $info->lname=$request->lname;
-        $info->age=$request->age;
-        $info->gender=$request->gender;
-        $info->address=$request->address;
-        $info->contact=$request->contacts;
-        $info->save();
-        // User_info::create([
-        //     'user_id'=> $last_id,
-        //     'fname'=>$request->fname,
-        //     'lname'=>$request->lname,
-        //     'age'=>$request->age,
-        //     'gender'=>$request->gender,
-        //     'address'=>$request->address,
-        //     'contact'=>$request->contacts,
-        // ]);
-        $filename=null;
-        if($request->hasFile('pfp')){
-            $filename=$request->file('pfp')->hashName();
-            if(!empty($filename)){
-                $path=$request->file('pfp')->storeAs('user_images',$filename,'public');
-                if(!$path){
-                    return redirect()->back()->withErrors('failed to store the image');
-                    exit;
-                }else{
-                    User_info::where('user_id',$last_id)
-                    ->update([
-                        'pfp'=>$filename
-                    ]); 
-                }
-            }
-        }
-        return redirect()->back()->with('success');
+        // $info= new User_info();
+        // $info->user_id=$last_id;
+        // $info->fname=$request->fname;
+        // $info->lname=$request->lname;
+        // $info->age=$request->age;
+        // $info->gender=$request->gender;
+        // $info->address=$request->address;
+        // $info->contact=$request->contacts;
+        // $info->save();
+        // // User_info::create([
+        // //     'user_id'=> $last_id,
+        // //     'fname'=>$request->fname,
+        // //     'lname'=>$request->lname,
+        // //     'age'=>$request->age,
+        // //     'gender'=>$request->gender,
+        // //     'address'=>$request->address,
+        // //     'contact'=>$request->contacts,
+        // // ]);
+        // $filename=null;
+        // if($request->hasFile('pfp')){
+        //     $filename=$request->file('pfp')->hashName();
+        //     if(!empty($filename)){
+        //         $path=$request->file('pfp')->storeAs('user_images',$filename,'public');
+        //         if(!$path){
+        //             return redirect()->back()->withErrors('failed to store the image');
+        //             exit;
+        //         }else{
+        //             User_info::where('user_id',$last_id)
+        //             ->update([
+        //                 'pfp'=>$filename
+        //             ]); 
+        //         }
+        //     }
+        // }
+        // return redirect()->back()->with('success');
 
     }
 
