@@ -224,8 +224,8 @@ class UserInfoController extends Controller
     public function destroy($id)
     {
         $del=User::find($id);
-        if($del->delete($del)){
-            return redirect()->back()->with('success','successfully deleted the user');
+        if($del->forceDelete($del)){
+           return response()->json("the user is deleted");
         }else{
             return redirect()->back()->with('error','failed to delete the specified user');
         }
