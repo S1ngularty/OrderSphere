@@ -13,10 +13,10 @@ class testController extends Controller
      */
     public function index()
     {
-        $item=category::withWhereHas('items')->get();
-        dump($item);
+        $item=Items::withWhereHas('category')->get();
+        return response()->json($item);
 
-       dump($item[0]->items[1]->item_name);
+       
     }
 
 

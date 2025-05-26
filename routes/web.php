@@ -49,5 +49,6 @@ Auth::logout();
 
 Route::resource('test',testController::class);
 Route::view("ajax/users","user.test");
+Route::view("ajax/item","user.items");
 
 
