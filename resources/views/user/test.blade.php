@@ -11,7 +11,7 @@
 <body>
     <h1>Hellooooo</h1>
      <!-- Button to trigger modal -->
-  <button type="button" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#customerModal">
+  <button class="addUser btn btn-info btn-lg" data-action="add">
     Add <i class="bi bi-plus"></i>
   </button>
 
@@ -54,6 +54,19 @@
     </div>
   </div>
 
+  <div class="cdiv">
+    <table class="table table-striped table-bordered table-hover table-sm" id="ctable">
+      <thead>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+  </div>
   <!-- Bootstrap 5 JS Bundle (includes Popper) -->
 </body>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

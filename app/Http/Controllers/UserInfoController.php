@@ -19,7 +19,7 @@ class UserInfoController extends Controller
     {
         // return $user_data_table->render("admin.users.index");
         $info=User::withoutTrashed()->get();
-        return response()->json($info);
+        return response()->json(["user"=>$info]);
     }
 
     /**
@@ -38,7 +38,7 @@ class UserInfoController extends Controller
 
         $user= User::create($request->all());
         if($user){
-            return response()->json(["envelope"=>["user"=>$request->all(),"status"=>200]]);
+            return response()->json($request->all());
         }
 
         // $rules=[
