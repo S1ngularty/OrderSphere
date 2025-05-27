@@ -1,3 +1,13 @@
+ function ModalClose(){
+    $("#customerModal").modal("hide")
+    $("#cform").trigger("reset")
+ }
+
+ function ModalShow(){
+    $("#cform").trigger("reset")
+    $("#customerModal").modal("show")
+ }
+ 
  function rowConstructor (email,status,role,id){
     let tr=$("<tr>")
     tr.append($("<td>").text(email))
@@ -36,8 +46,7 @@ function requestConstructor(method,url,action){
 
     function actionPrompt(action,result){
         result ? bootbox.alert(`${action} user is Successful`) :bootbox.alert(`${action} of user is failed, please retry again`)
-        $("#customerModal").modal("hide")
-        $("#cform").trigger("reset")
+        ModalClose()
     }
     
 }
@@ -82,8 +91,7 @@ $(document).ready(function(){
         if(action=="edit"){
             let data= await dataLookup(tr)
             console.log(data)
-            $("#cform").trigger("reset")
-            $("#customerModal").modal("show")
+            ModalShow()
             $("#cform").append(`<input type='hidden' value=${tr}>`)
             $("#email").val(data.email)
             $("#pass").val(data.password)
@@ -96,13 +104,11 @@ $(document).ready(function(){
         })
     
         }else if(action=="add"){
-            $("#cform").trigger("reset")
-            $("#customerModal").modal("show")
+            ModalShow()
             console.log("adding")
             $("#customerSubmit").off("click").click(function(e){
             e.preventDefault()
             let url=`/admin/user/store`
-            $("#customerModal").modal("hide")
             requestConstructor("POST",url,"Adding")
             })
         }else if(action=="destroy"){
@@ -121,7 +127,7 @@ $(document).ready(function(){
                 callback:function(result){
                     let url=`/admin/user/delete/${tr}`
                     if(result) requestConstructor("DELETE",url,"Deleting")
-                    el.closest("tr").fadeOut(3000,function(){
+                    el.closest("tr").fadeOut(1000,function(){
                         this.remove()
                     })
                 }
