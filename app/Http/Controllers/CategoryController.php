@@ -62,4 +62,18 @@ class CategoryController extends Controller
     {
         //
     }
+
+      public function chart(){
+      $data=Category::withCount('items')->get();
+
+    //   return response()->json($data);
+        $chartLabel = [];
+        $chartData =[];
+      foreach($data as $datas){
+        $chartLabel[]=$datas->category_name;
+        $chartData[]=$datas->items_count;
+      }
+    //   dd($chartData);
+        return response()->json(array('data'=>$chartData,'label'=>$chartLabel));
+    }
 }

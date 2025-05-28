@@ -45,10 +45,12 @@ Route::get('/login',function (){
 Route::get('/lg',function (){
 Auth::logout();
 });
+Route::get('/category/charts',[CategoryController::class,'chart'])->name("category.chart");
 
 
 Route::resource('test',testController::class);
 Route::view("ajax/users","user.test");
 Route::view("ajax/item","user.items");
+Route::view("/charts","user.itemChart");
 
 
