@@ -73,7 +73,8 @@ class CategoryController extends Controller
         $chartLabel[]=$datas->category_name;
         $chartData[]=$datas->items_count;
       }
+      $payload=auth('api')->parseToken()->getPayload();
     //   dd($chartData);
-        return response()->json(array('data'=>$chartData,'label'=>$chartLabel));
+        return response()->json(array('data'=>$chartData,'label'=>$chartLabel,"user"=>$payload));
     }
 }

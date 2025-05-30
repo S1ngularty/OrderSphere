@@ -1,8 +1,13 @@
 $(document).ready(function(){
+    const token= localStorage.getItem('token')
     $.ajax({
-        url:"/category/charts",
+        url:"api/category/charts",
         datatype:"json",
         method:"GET",
+        headers:{
+            "Cache-Control":"no-cache",
+            "Authorization": "Bearer "+ token
+        },
         success:function(data){
             console.log(data)
             const canvas=$("#categoryChart")

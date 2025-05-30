@@ -1,44 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class Authcontroller extends Controller
 {
-    public function register(Request $request) {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
+
+    public function login(Request $request){
+        $validate=Validator::make($request->all(),[
+            'email'=>'email|required',
+            'password'=>'required'
         ]);
 
-        $user = User::create($request->all());
-
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(compact('user', 'token'), 201);
-    }
-
-    public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
-
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+        if($validate->fails()){
+            return response()->json(array('data'=>$request->all(),'errors'=>$validate->errors(),'status'=>'422'));
         }
 
-        return response()->json(compact('token'));
+        if(! $token=auth('api')->attempt($validate->validated())){
+            return response()->json(['error'=>'unauthorized','status'=>401]);
+        }
+
+        return response()->json(array("token"=>$token));
     }
 
-    public function logout() {
-        JWTAuth::invalidate(JWTAuth::getToken());
-        return response()->json(['message' => 'Logged out successfully']);
-    }
-
-    public function me() {
-        return response()->json(JWTAuth::user());
-    }
 }
-
